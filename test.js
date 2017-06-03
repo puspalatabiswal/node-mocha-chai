@@ -2,9 +2,12 @@ var assert = require('chai').assert,//assert called as property
     expect = require('chai').expect,
     should = require('chai').should() // method
 
+    //to run the node js application we will use supertest and path also ====
+var supertest = require ('supertest');
+var server = supertest.agent("http://localhost:1337");
+//=====
 
-
-describe("this is my first test case " , function(){
+/*describe("this is my first test case " , function(){
 it("my first test case", function(){
 		console.log("my first test case")
 })
@@ -19,28 +22,40 @@ it("my third test case", function(){
 
 
 
-})
+})*/
 
 
 
 
 
-describe.only("this is my second test case  " , function(){
+describe.only("testing contactlist Api " , function(){
 
-it("my first test case " , function(){
-	var foo = "pooja";
+it("should get al contacts" , function(done){
+	/*var foo = "pooja";
     var tea = {
-    	flavors: "hii"
-    };
+    	flavors: "hii"*/
+    
 	//assert example=======
 	/*assert.typeOf(foo,"string")
 	console.log("this is my techera testcases")*/
 	//============
 
-	foo.should.be.a('string');
+	/*foo.should.be.a('string');
 	foo.should.equal("pooja");
 	foo.should.have.lengthOf(5);
-	tea.should.have.property('flavors')
+	tea.should.have.property('flavors')*/
+
+	server.get("/getContacts")
+	.expect(200)
+	.expect('content-type',/json/)
+	.end(function(err,data){
+		//console.log(data.body)
+		data.body.forEach(function(data){
+			data.should.have.property("dob")
+			data.dob.should.equal("789654")
+		})
+		done();
+	})
 })
 
 
